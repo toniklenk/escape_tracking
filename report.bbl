@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{info11020125}
+{\sc Buslaev, A., Iglovikov, V.~I., Khvedchenya, E., Parinov, A., Druzhinin,
+  M., and Kalinin, A.~A.}
+\newblock Albumentations: Fast and flexible image augmentations.
+\newblock {\em Information 11}, 2 (2020).
+
+\bibitem{Nath2019}
+{\sc Nath, T., Mathis, A., Chen, A.~C., Patel, A., Bethge, M., and Mathis,
+  M.~W.}
+\newblock Using deeplabcut for 3d markerless pose estimation across species and
+  behaviors.
+\newblock {\em Nature Protcols 14\/} (7 2019), 2152--2176.
+
+\end{thebibliography}

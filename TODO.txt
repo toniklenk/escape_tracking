@@ -1,0 +1,46 @@
+TODO
+auf meinem PC: 	egal, da ich hier nur mit fertigen videodateien arbeite. hier ist nur traningmaterial zum labeln im dlc/videos folder, den configuriere und labele ich bei mir auf dem PC und lade dann zum trainieren aufs cluster hoch.
+		dlc folder wird von meinem pc nur hochgeladen, nicht vom cluster runtergeladen.
+		ich lade vom cluster nur die analysedateien (.csv) und gelabelte videos herunter.
+		
+
+2. data cleaning
+confidence von DLC ggf. unter threshold, dann sind pose positions auf -1. wie damit umgehen ?
+rauscutten ? nein, da nicht sinnvoll wenn das zwischendurch passiert.
+ignorieren ? wenn man davon ausgeht, dass es nicht während einem stimulus passiert, wo maus auf dem tisch ist.
+manuel trials durchgehen und schauen ob DLC richtig erkennt -> vorheriges problem: trial sorting.
+
+
+----
+Zuerst bisherige Analyse für A1-A3, dann network nochmal trainieren für A4, A5
+replace low confidence with nan to exclude from trial based average
+
+---
+prio 2: train new model for better accuracy
+
+try resampling videos
+
+copy A1-A5 video files to my desktop
+create new DLC project
+manually pick frames, from all mice and also on border, see if new model works better
+upload project, including labeled training frames, to lab share
+
+
+
+
+----
+ANALYSE
+
+wild typ vs. toxin maus
+
+trial based
+	head angle velocity
+	body velocity
+
+not trial based
+	tisch unten/oben
+	tisch innen/außen
+
+	location heatmat
+	
+allen code auf dem lab drive hochladen

@@ -1,0 +1,104 @@
+\documentclass[11pt, letterpaper]{article}
+
+\title{Lab rotation report: Escape behaviour in mice}
+\author{Max Bardelang}
+\date{December 2025}
+
+\begin{document}
+% TITLE PAGE -----------------------------------------------------------
+
+\begin{center}
+	\thispagestyle{empty}
+	
+	\LARGE{Graduate School of Computational Neuroscience}\\
+	\LARGE{University of Tübingen}\\
+	
+	\vspace{3cm}
+	
+	\LARGE{\textbf{Escape behaviour in mice}}\\[-0.5ex]
+	
+	\vspace{6cm}
+	
+	\large{Laboratory report \par}
+	\large{presented by \par}
+	\large{Max Bardelang}
+	
+	\vspace{1.6cm}
+	
+	The study was supervised by \par
+	Prof. Dr. Burgalossi, Florian Hofmann\par
+	Werner Reichardt Centre for Integrative Neuroscience\\
+	Neural Circuits and Behavior group\\
+		
+	\vspace{1.6cm}
+	
+	Duration of the lab rotation: 9 weeks \par
+	Deadline for submission: 15.12.2025
+	
+\end{center}
+
+\pagebreak
+
+
+% ABSTRACT ---
+\begin{abstract}
+	The anterior dorsal nucleus plays a important role in relaying sensory information. Its exact function however is unclear.
+\end{abstract}
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+% INTRODUCTION
+
+
+\section{Introduction}
+% "chain of reasoning that led to the question or hypothesis your study addresses"
+
+% Escape behaviour
+
+% From neuroscientific background to experimental design
+% ...
+% Head direction, homing vector.
+Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
+
+% Task description
+\subsection{Project description}
+The goal of the project is to set up a experiment measuring the underlying variables head direction and homing vector during the time course of escape trials of mice.
+
+This task is divided into to major requirements. First, a environment has to be created, in which escape behaviour in the mice can be initiated and recorded. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. Both of these variables can be calculated from the position of both ears and the nose at each respective time point, with the exact geometry of this calculation down described down below. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed.
+
+
+
+% MATERIALS AND METHODS
+\section{Materials and Methods}
+
+\subsection{Pose tracking}
+Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut (DLC) \cite[]{Nath2019} for Python. Important steps in this pipeline were first labeling training data, second creating training set and choosing model and pretraining weights, third, training the model on a computing cluster and finally running pose estimation on all recordings.
+
+A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. 
+DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse) was choosen, in combination with a underlying HRNet-w32 architecture. The image augmentation method albumentations \cite{info11020125}, is the default and only augmentation method under the Python installation of DLC.\\
+
+
+
+
+
+
+
+
+% RESULTS
+
+% DISCUSSION
+
+% ACKNOWLEDGEMENTS
+
+% LITERATURE
+\bibliographystyle{acm}
+\bibliography{./references}
+
+
+
+
+\end{document}
