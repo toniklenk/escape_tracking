@@ -1,5 +1,5 @@
 \documentclass[11pt, letterpaper]{article}
-
+\usepackage[]{hyperref}
 \title{Lab rotation report: Escape behaviour in mice}
 \author{Max Bardelang}
 \date{December 2025}
@@ -55,23 +55,29 @@
 \section{Introduction}
 % "chain of reasoning that led to the question or hypothesis your study addresses"
 % Whats in the introduction
-This aim of this project is to pilot a experimental environment and analysis pipeline for a planned experiment on head direction cells in the anterior dorsal nucleus. The neuroscientific background of this planned study will be introduced concisely to provide a background to understand the experimental design.
+This aim of this project is to pilot a experimental environment and analysis pipeline for a planned study on head direction cells in the anterior dorsal nucleus. The neuroscientific background of this study will be introduced concisely to provide a background for understanding the experimental design.
 
-% Escape behaviour
-\subsection{Escape behaviour}
-Escape behaviour in mice \cite{BrancoEscapeBehavuour2025} is a rapid, stereotyped and ethologically relevant defensive action that is triggered when a sensory stimulus signals imminent danger. Behaviourally, escape typically consists of a brief latency followed by an abrupt initiation of high-speed locomotion, often preceded by a short orienting or freezing phase. Once escape is initiated, mice generate a directed movement that increases distance from the perceived threat and, when available, orientation toward a place of safety. In laboratory paradigms, animals reorient their head and body axis toward a previously learned shelter location, even when the shelter is not visible at the time of threat, indicating that spatial information is rapidly accessed at escape onset. After onset, escape is sustained until the animal reaches shelter, highlighting that escape behaviour is not a reflexive turn-and-run, but a temporally structured sequence comprising fast initiation, goal-directed reorientation, and continued locomotion until safety is achieved.
-\\
-\\
+
+\subsection{Head direction cells of the anterior dorsal nucleus}
 % From neuroscientific background to experimental design
 % HD cells in anterior thalamic nucleus
-Goal: Whether and how the anterior dorsal nucleus is involved in spatial episodic memory formation.
 
+
+\subsection{Escape behaviour in mice}
+% What is escape
+Escape behaviour in mice \cite{BrancoEscapeBehavuour2025} is a rapid, stereotyped and ethologically relevant defensive action that is triggered when a sensory stimulus signals imminent danger. Behaviourally, escape typically consists of a brief latency followed by an abrupt initiation of high-speed locomotion, often preceded by a short orienting or freezing phase. Once escape is initiated, mice generate a directed movement that increases distance from the perceived threat and, when available, orientation toward a place of safety. In laboratory paradigms, animals reorient their head and body axis toward a previously learned shelter location, even when the shelter is not visible at the time of threat, indicating that spatial information is rapidly accessed at escape onset. After onset, escape is sustained until the animal reaches shelter, highlighting that escape behaviour is not a reflexive turn-and-run, but a temporally structured sequence comprising fast initiation, goal-directed reorientation, and continued locomotion until safety is achieved.
+\\
+
+
+\subsection{Project description and goal}
+% Story: The piloted study wants to compare accuracy of reorientation during escape and how this results in the variables we are measuring
+
+% Goal of piloted study
+Goal: Whether and how the anterior dorsal nucleus is involved in spatial episodic memory formation.
 To asses, whether and how the head direction cells of the anterior dorsal nucleus is involved in spatial episodic memory formation
 
-
-
+% How this higher goal is transferred to this project
 % Task description
-\subsection{Project description}
 The goal of the project is to set up a experiment measuring the underlying variables head direction and homing vector during the time course of escape trials of mice.
 
 This task is divided into to major requirements. First, a environment has to be created, in which escape behaviour in the mice can be initiated and recorded. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. Both of these variables can be calculated from the position of both ears and the nose at each respective time point, with the exact geometry of this calculation down described down below. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed.
@@ -84,23 +90,21 @@ This task is divided into to major requirements. First, a environment has to be 
 
 \subsection{Experimental design}
 % Head direction, homing vector.
-To quantify \\
-\\
 Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
 
 
 \subsection{Pose tracking}
-Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut (DLC) \cite[]{Nath2019} for Python to train a CNN for pose estimation. The first step of labeling data was performed on a desktop-PC, due to the requirement of a Graphical user interface. Subsequent steps were run on the Cluster of the Werner Reichardt Centrum für Integrative Neurowissenschaften 
+Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut (DLC) \cite[]{Nath2019} for Python to train a CNN for pose estimation. Code with detailed descriptions can be found in \autoref{A}.\\
 
-A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice.
-
-DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse) was choosen, in combination with a underlying HRNet-w32 architecture. The image augmentation method albumentations \cite{info11020125}, is the default and only augmentation method under the Python installation of DLC.\\
+A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse) was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
 
 
+Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model training was performed using a NVIDIA A100 40GB.\\
 
 
+Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1].
 
-
+\subsection{Homing vector analysis}
 
 
 
@@ -114,7 +118,8 @@ DLC offes pretrained weight initialisations with corresponding models fitted to 
 \bibliographystyle{acm}
 \bibliography{./references}
 
-
-
+\appendix
+\section{DeepLabCut commands}\label{A}
+Initializing the dataset has to be run on the cluster as well, as models are downloaded during this step.
 
 \end{document}
