@@ -78,6 +78,9 @@ To asses, whether and how the head direction cells of the anterior dorsal nucleu
 
 % How this higher goal is transferred to this project
 % Task description
+% Head direction, homing vector.
+Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
+
 The goal of the project is to set up a experiment measuring the underlying variables head direction and homing vector during the time course of escape trials of mice.
 
 This task is divided into to major requirements. First, a environment has to be created, in which escape behaviour in the mice can be initiated and recorded. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. Both of these variables can be calculated from the position of both ears and the nose at each respective time point, with the exact geometry of this calculation down described down below. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed.
@@ -88,13 +91,19 @@ This task is divided into to major requirements. First, a environment has to be 
 \section{Materials and Methods}
 
 
-\subsection{Experimental design}
-% Head direction, homing vector.
-Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
+\subsection{Experimental setup}
+% Arena
+All trials were performed in a elevated circular arena made of solid plastic of ~90cm in diameter. The shelter was mounted at the border of the arena, so the upper edge aligned with the arena surface.
 
+
+%Experimental setup
+Data was recorded using Spike2 (Cambridge Electronic Design Limited), which controlled camera and speakers. Sound stimuli were send by the program after a button press from the experimenter and reached sound pressure levels of 65-80 dB at the centre of the arena. TTL triggers for controlling frames were sent to the camera at a frame rate of 25 per second. Spike2 recordings were exported and converted to .mat format.
+
+
+\subsection{Mice}
 
 \subsection{Pose tracking}
-Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut (DLC) \cite[]{Nath2019} for Python to train a CNN for pose estimation. Code with detailed descriptions can be found in \autoref{A}.\\
+Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut 3.0.0rc9(DLC) \cite[]{Nath2019} for Python 3.10 to train a CNN for pose estimation. Code with detailed descriptions can be found in \autoref{A}.\\
 
 A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse) was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
 
@@ -102,10 +111,17 @@ A training data set of 200 uncropped images, selected by DLC's automatic k-means
 Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model training was performed using a NVIDIA A100 40GB.\\
 
 
-Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1].´
+Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1].
+% Maybe look up threshold below which DLC puts points to generic posistion at corner.
+
+% Synchronizing trigger data and video recordings
+
+
 
 \subsection{Homing vector analysis}
+Homing vector analysis was run using Python 3.10. Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice. At each timepoint, head center position was calculated as midpoint between the ears, head direction as the vector from head centre to nose, and homing vector as the vector from head centre to nose. 
 
+The homing vector at each timepoint was determined as the 
 
 
 % RESULTS
