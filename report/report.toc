@@ -7,4 +7,5 @@
 \contentsline {subsection}{\numberline {2.2}Mice}{5}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Pose tracking}{5}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Homing vector analysis}{6}{subsection.2.4}%
-\contentsline {section}{\numberline {A}DeepLabCut commands}{6}{appendix.A}%
+\contentsline {section}{\numberline {3}Results}{6}{section.3}%
+\contentsline {section}{\numberline {A}DeepLabCut commands}{7}{appendix.A}%

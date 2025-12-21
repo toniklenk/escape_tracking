@@ -1,1 +1,0 @@
-sudo mount -t cifs -o username=mbardelang,domain=CIN //172.25.250.112/burgalossi /mnt/burgalossi

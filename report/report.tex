@@ -1,5 +1,6 @@
 \documentclass[11pt, letterpaper]{article}
 \usepackage[]{hyperref}
+\bibliographystyle{apalike}
 \title{Lab rotation report: Escape behaviour in mice}
 \author{Max Bardelang}
 \date{December 2025}
@@ -105,7 +106,7 @@ Data was recorded using Spike2 (Cambridge Electronic Design Limited), which cont
 \subsection{Pose tracking}
 Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut 3.0.0rc9(DLC) \cite[]{Nath2019} for Python 3.10 to train a CNN for pose estimation. Code with detailed descriptions can be found in \autoref{A}.\\
 
-A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse) was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
+A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse)\cite{Ye_2024} was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
 
 
 Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model training was performed using a NVIDIA A100 40GB.\\
@@ -119,19 +120,18 @@ Pose tracking on a recording yields both the estimated coordinates by the model 
 
 
 \subsection{Homing vector analysis}
-Homing vector analysis was run using Python 3.10. Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice. At each timepoint, head center position was calculated as midpoint between the ears, head direction as the vector from head centre to nose, and homing vector as the vector from head centre to nose. 
+Homing vector analysis was run using Python 3.10 and pandas 2.3.3. Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice.
 
-The homing vector at each timepoint was determined as the 
+At each timepoint, head center position was calculated as the midpoint between the ears, head direction as the vector from head centre to nose, and homing vector as the vector from head centre to nose. To asses reorientation accuracy, the absolute difference between head direction and homing vector was calculated. 
 
 
 % RESULTS
-
+\section{Results}
 % DISCUSSION
 
 % ACKNOWLEDGEMENTS
 
 % LITERATURE
-\bibliographystyle{acm}
 \bibliography{./references}
 
 \appendix

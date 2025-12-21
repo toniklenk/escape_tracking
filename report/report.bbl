@@ -1,0 +1,22 @@
+\begin{thebibliography}{}
+
+\bibitem[Branco and Redgrave, 2020]{BrancoEscapeBehavuour2025}
+Branco, T. and Redgrave, P. (2020).
+\newblock The neural basis of escape behavior in vertebrates.
+\newblock 23:3.
+
+\bibitem[Nath et~al., 2019]{Nath2019}
+Nath, T., Mathis, A., Chen, A.~C., Patel, A., Bethge, M., and Mathis, M.~W.
+  (2019).
+\newblock Using deeplabcut for 3d markerless pose estimation across species and
+  behaviors.
+\newblock {\em Nature Protcols}, 14:2152--2176.
+
+\bibitem[Ye et~al., 2024]{Ye_2024}
+Ye, S., Filippova, A., Lauer, J., Schneider, S., Vidal, M., Qiu, T., Mathis,
+  A., and Mathis, M.~W. (2024).
+\newblock Superanimal pretrained pose estimation models for behavioral
+  analysis.
+\newblock {\em Nature Communications}, 15(1).
+
+\end{thebibliography}
