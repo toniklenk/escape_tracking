@@ -63,6 +63,14 @@ This aim of this project is to pilot a experimental environment and analysis pip
 % From neuroscientific background to experimental design
 % HD cells in anterior thalamic nucleus
 
+% Goal of piloted study
+%Goal: Whether and how the anterior dorsal nucleus is involved in spatial episodic memory formation.
+%To asses, whether and how the head direction cells of the anterior dorsal nucleus is involved in spatial episodic memory formation
+
+Neurons of the anterios dorsal nucleus are known to contain a subset of cells that are head direction (HD) tuned and form part of a cortical circuit that plays a central role in episodic memory formation. These HD cells are known to provide directional input to downstream hippocampal neurons, functionally linked to memory impairments. In a recent study, \cite{Blanco-Hernndez2024} revealed additional correlations of these HD cells with sensory and behavioural input, that non-HD-tuned neurons in the anterior dorsal nucleus did not exhibit. Concretely,..,.suggests,... . Based on these correlations, a follow-up study now will investigate the \textit{functional} relationship of these HD cells with episodic memory formation by selectively inactivating them by optogenetic tools and resulting behavioural effects in mice. %maybe explain why ethological relevance is important
+The goal of this project to prepare the experimental setup and analysis pipeline. A cruicial parameter in this study is the ethological relevance under which this episodic memory formation takes place. Escape behaviour in rodents is such a behaviour and will be defined in the following paragraph.
+
+
 
 \subsection{Escape behaviour in mice}
 % What is escape
@@ -71,20 +79,11 @@ Escape behaviour in mice \cite{BrancoEscapeBehavuour2025} is a rapid, stereotype
 
 
 \subsection{Project description and goal}
-% Story: The piloted study wants to compare accuracy of reorientation during escape and how this results in the variables we are measuring
+%Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
 
-% Goal of piloted study
-Goal: Whether and how the anterior dorsal nucleus is involved in spatial episodic memory formation.
-To asses, whether and how the head direction cells of the anterior dorsal nucleus is involved in spatial episodic memory formation
+The success of the project will be evaluated along two mayor requirements:
 
-% How this higher goal is transferred to this project
-% Task description
-% Head direction, homing vector.
-Reorientation accuracy is measured as the difference between the head direction vector and the homing vector of the mouse after reorientation during escape.
-
-The goal of the project is to set up a experiment measuring the underlying variables head direction and homing vector during the time course of escape trials of mice.
-
-This task is divided into to major requirements. First, a environment has to be created, in which escape behaviour in the mice can be initiated and recorded. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. Both of these variables can be calculated from the position of both ears and the nose at each respective time point, with the exact geometry of this calculation down described down below. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed.
+First, a environment has to be created, in which episodic memory formation can be studied by initiating and recording escape behaviour in mice. A experimental paradigm closely related is used in \cite{Campagner2023}. Escape behaviour has to be reproduced under this paradigm, with the additional introduction of a modification as will be described down below. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed. These results will also allow evaluating qualitatively, whether mice in the prepared experimental setup exhibit the behaviour described in the preceding paragraph.
 
 
 
@@ -94,7 +93,7 @@ This task is divided into to major requirements. First, a environment has to be 
 
 \subsection{Experimental setup}
 % Arena
-All trials were performed in a elevated circular arena made of solid plastic of ~90cm in diameter. The shelter was mounted at the border of the arena, so the upper edge aligned with the arena surface.
+All trials were performed in a elevated circular arena made of solid plastic of ~90cm in diameter. In order to constrain the mouse to accessing the memorized shelter location and prevent accessing visual information to estimate the shelter location, it was placed as an underground shelter, barred from sight when the mouse is out in the arena. To achieve this, the shelter was mounted at the border of the arena, so the upper edge aligned with the arena surface, in a modification of the original paradigm used in \cite{Campagner2023}.
 
 
 %Experimental setup
@@ -109,7 +108,7 @@ Pose tracking of left ear, right ear and nose was performed using the software p
 A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse)\cite{Ye_2024} was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
 
 
-Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model training was performed using a NVIDIA A100 40GB.\\
+Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model fine tuning was performed using a NVIDIA A100 40GB.\\
 
 
 Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1].
