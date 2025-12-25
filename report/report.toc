@@ -8,4 +8,4 @@
 \contentsline {subsection}{\numberline {2.3}Pose tracking}{6}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Homing vector analysis}{6}{subsection.2.4}%
 \contentsline {section}{\numberline {3}Results}{7}{section.3}%
-\contentsline {section}{\numberline {A}DeepLabCut commands}{7}{appendix.A}%
+\contentsline {section}{\numberline {A}DeepLabCut commands}{8}{appendix.A}%
