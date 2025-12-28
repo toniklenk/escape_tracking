@@ -1,5 +1,6 @@
 \documentclass[11pt, letterpaper]{article}
 \usepackage[]{hyperref}
+\usepackage{graphicx}
 \bibliographystyle{apalike}
 \title{Lab rotation report: Escape behaviour in mice}
 \author{Max Bardelang}
@@ -97,7 +98,7 @@ All trials were performed in a elevated circular arena made of solid plastic of 
 
 
 %Experimental setup
-Data was recorded using Spike2 (Cambridge Electronic Design Limited), which controlled camera and speakers. Sound stimuli were send by the program after a button press from the experimenter and reached sound pressure levels of 65-80 dB at the centre of the arena. TTL triggers for controlling frames were sent to the camera at a frame rate of 25 per second. Spike2 recordings were exported and converted to .mat format.
+Data was recorded using Spike2 (Cambridge Electronic Design Limited), which controlled camera and speakers. Sound stimuli were send by the program after a button press from the experimenter and reached sound pressure levels of 65-80 dB at the centre of the arena. TTL triggers for controlling frames were sent to the camera at a frame rate of 25 per second. Spike2 recordings were exported and converted to .mat format. The camera lens was changed beginning with recordings of mice 5, which resulted in a drop in image resolution due to unresolved hardware issues.
 
 
 \subsection{Mice}
@@ -129,15 +130,51 @@ To asses reorientation accuracy, the AAD of selected valid trials was calculated
 
 % RESULTS
 \section{Results}
+
+\subsection{Pose estimation}
+\subsubsection{Evaluating estimation quality}
+The evaluation of the confidence assigned by the model to its own estimations show medium quality of pose estimation data. These results in \ref{fig:confidencehistograms} from the model trained on data of the first three mice show a clear decline in pose estimation quality after mouse 5, where switch the camera lens caused a change in image resolution.
+
+
+Figures in Appendix \ref{A} additionally highlight large gaps in the pose estimation data during crucial timespans after stimulus onset for some trials.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\linewidth]{confidence_histograms}
+	\caption[short short]{Pose estmation confidence. Histograms of confidence score (likelihood) given to the pose estimation in each frame within a trial by DeepLabCut model. Performance drop pronounced in fifth and sixth mice.}
+	\label{fig:confidencehistograms}
+\end{figure}
+
+
+\newpage
 % DISCUSSION
+\section{Discussion}
+
+The drop in pose estimation confidence underscores, that this pipeline for pose estimation is not robust to changes in the recording setup. To achieve a reliably high quality of estimations, it is suggested to train another pose estimation model with data recorded under the final recording setup, possibly also utilizing DeepLabCuts additional functionality for active learning.
 
 % ACKNOWLEDGEMENTS
 
 % LITERATURE
+\newpage
 \bibliography{./references}
 
 \appendix
 \section{DeepLabCut commands}\label{A}
 Initializing the dataset has to be run on the cluster as well, as models are downloaded during this step.
+
+\section{Pose estimation confidence}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{confidence_mouse1}
+	\caption{Pose estimation confidence of single trials in mouse 1. See \ref{fig:confidencemouse6} for description. Upper 10 are trials with highest average confidence, bottom 10 are trials with lowest average confidence.}
+	\label{fig:confidencemouse1}
+\end{figure}
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=0.65\linewidth]{confidence_mouse6}
+	\caption{Pose estimation confidence of single trials (trials with and without escape behaviour, before valid trials selection) in mouse 6. Estimation confidence is lowest confidence among pose estimations for all three bodyparts per frame. One tile contains one trials.  With frame no° (i.e. time) on x-axis. Green vertical bar indicated stimulus onset. Red horizontal bar as visual guidance towards marking threshold for very low confidence of 0.33 out of possible 1.0 .}
+	\label{fig:confidencemouse6}
+\end{figure*}
 
 \end{document}
