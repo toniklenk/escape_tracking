@@ -120,11 +120,13 @@ Pose tracking on a recording yields both the estimated coordinates by the model 
 
 
 \subsection{Homing vector analysis}
-Homing vector analysis was run using Python 3.10 and pandas 2.3.3. Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice.
+Homing vector analysis was run using Python 3.10 and pandas 2.3.3. Due the escape behaviour being only repeatably observable during recording with mice 6, this analysis is only run on for the data of this mouse.
+
+Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice.
 
 At each timepoint, head center position was calculated as the midpoint between the ears, head direction as the vector from head centre to nose, and homing vector as the vector from head centre to shelter position. The absoloute angular difference (AAD) was defined as the absoloute value of the angle between head direction vector and homing vector, in degrees´.
 
-To select valid trials, angular velocity was determined as the first derivative of the AAD and plotted for each trial. Trials with a notable deflection in angular velocity after stimulus presentation were selected as valid trials, as such a deflection reflects a rapid movement of the head of the mouse, i.e. a reorientation - possibly towards the shelter.
+To select valid trials, angular velocity was determined as the first derivative of the AAD and plotted for each trial. Trials with a notable deflection in angular velocity after stimulus presentation were selected as valid trials, as such a deflection reflects a rapid movement of the head of the mouse, i.e. a reorientation - possibly towards the shelter. 
 
 To asses reorientation accuracy, the AAD of selected valid trials was calculated and plotted - together with the trajectories of the individual valid trials, along the time axis of a trial.
 
@@ -132,12 +134,11 @@ To asses reorientation accuracy, the AAD of selected valid trials was calculated
 \section{Results}
 
 \subsection{Pose estimation}
-\subsubsection{Evaluating estimation quality}
-The evaluation of the confidence assigned by the model to its own estimations show medium quality of pose estimation data. These results in \ref{fig:confidencehistograms} from the model trained on data of the first three mice show a clear decline in pose estimation quality after mouse 5, where switch the camera lens caused a change in image resolution.
+%\subsubsection{Evaluating quality of pose tracking}
+The evaluation of the confidence assigned by the model to its own estimations show medium quality of pose estimation data. These results in \ref{fig:confidencehistograms} from the model trained on data of the first three mice show a clear decline in pose estimation quality after mouse 5, where switching the camera lens caused a change in image resolution.
 
 
 Figures in Appendix \ref{A} additionally highlight large gaps in the pose estimation data during crucial timespans after stimulus onset for some trials.
-
 \begin{figure}
 	\centering
 	\includegraphics[width=.9\linewidth]{confidence_histograms}
@@ -145,6 +146,26 @@ Figures in Appendix \ref{A} additionally highlight large gaps in the pose estima
 	\label{fig:confidencehistograms}
 \end{figure}
 
+
+\subsection{Selecting escape attempts}
+\begin{figure}
+	\centering
+	\includegraphics[width=1.\linewidth]{angular_velocity}
+	\caption{Angular velocity trajectories for mouse 6. Red vertical line indicated stimulus onset. Pronounced deflections after simulus onset indicate rapid reorientation - possibly towards shelter -, a hallmark of escape behaviour in mice. Trials selected as valid escape attempts are marked with a bold black border around the tile.}
+	\label{fig:angularvelocity}
+\end{figure}
+
+
+
+Figure \ref{fig:angularvelocity} shows all trials of mouse 6 and the trajectories of head angular velocity. Notable deflections in angular velocity indicate rapid head movement in the plane paralled to the floor, corresponding to a change of head direction are present in trials 0, 3, 4, 6, 7, 13.
+
+\subsection{Establishing a baseline for reorientation accuracy}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{reorientation_error_angle}
+	\caption{}
+	\label{fig:reorientationerrorangle}
+\end{figure}
 
 \newpage
 % DISCUSSION
