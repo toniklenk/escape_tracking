@@ -1,0 +1,61 @@
+# install DEEPLABCUT conda env on cluster from .yaml
+
+
+# get interactive session on gpu
+srun -p biggpu --pty bash
+
+
+# activate conda environment with deeplabcut
+conda activate DEEPLABCUT
+
+# python
+python3
+
+# load deeplabcut (takes a while, will load in light mode)
+import deeplabcut
+
+# creating project and labeling data has to be done on a desktop PC, as labeling can only be done on a machine with a GUI.
+# after labeling, move data to cluster. create_training_dataset has to be run at the same place where the model training will be run (i.e. on the cluster), as models are also downloaded when running that command.
+
+# create training set, this also downloads models, so this has to be executed at the same dir as where training is performed later
+# first, need to create a weight init instance, see also https://github.com/DeepLabCut/DeepLabCut/blob/main/deeplabcut/modelzoo/weight_initialization.py
+# names of different weight initialization models/detectors and decoders are listed in Deeplabcut documentation
+from pathlib import Path
+from deeplabcut.utils.auxiliaryfunctions import read_config
+from deeplabcut.modelzoo import build_weight_init
+
+project_cfg = read_config("/gpfs01/burgalossi/user/mbardelang/HD4-Max-2025-12-06/config.yaml")
+super_animal = "superanimal_topviewmouse"
+weight_init = build_weight_init(cfg=project_cfg, super_animal=super_animal, model_name="fasterrcnn_resnet50_fpn_v2", detector_name="fasterrcnn_resnet50_fpn_v2", with_decoder=True, memory_replay=False)
+deeplabcut.create_training_dataset("/gpfs01/burgalossi/user/mbardelang/HD4-Max-2025-12-06/config.yaml", net_type = "top_down_resnet_50", detector_type = "fasterrcnn_resnet50_fpn_v2", weight_init = weight_init)
+
+
+# train the network
+deeplabcut.train_network("/gpfs01/burgalossi/user/mbardelang/HD4-Max-2025-12-06/config.yaml")
+
+
+
+# use already trained DeepLabCut model to analyse a new video / new videos
+deeplabcut.analyze_videos("./HD3-Max-2025-11-05/config.yaml", ["/gpfs01/burgalossi/user/mbardelang/HD3-Max-2025-11-05/videos/FH0007 25-11-14 14-45-55.mp4"], save_as_csv=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -----
+# additional helpful commands (might not be necessary)
+
+# copy data file from lab share to personal directory before analysis
+find /mnt/burgalossi/lab\ share/Data/Max/esc_tracking/data/A1 -maxdepth 1 -type f -name "*.mp4" ! -name "*marked*" -exec sudo cp {} /mnt/burgalossi/user/mbardelang/A1 \;
+
+# copy .mat file from lab share to my PC for analysis
+sudo cp /mnt/burgalossi/lab\ share/Data/Max/esc_tracking/data/A3/*.mat ~/Documents/escape\ tracking/data/A3

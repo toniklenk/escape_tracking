@@ -68,8 +68,11 @@ This aim of this project is to pilot a experimental environment and analysis pip
 %Goal: Whether and how the anterior dorsal nucleus is involved in spatial episodic memory formation.
 %To asses, whether and how the head direction cells of the anterior dorsal nucleus is involved in spatial episodic memory formation
 
-Neurons of the anterios dorsal nucleus are known to contain a subset of cells that are head direction (HD) tuned and form part of a cortical circuit that plays a central role in episodic memory formation. These HD cells are known to provide directional input to downstream hippocampal neurons, functionally linked to memory impairments. In a recent study, \cite{Blanco-Hernndez2024} revealed additional correlations of these HD cells with sensory and behavioural input, that non-HD-tuned neurons in the anterior dorsal nucleus did not exhibit. Concretely,..,.suggests,... . Based on these correlations, a follow-up study now will investigate the \textit{functional} relationship of these HD cells with episodic memory formation by selectively inactivating them by optogenetic tools and resulting behavioural effects in mice. %maybe explain why ethological relevance is important
-The goal of this project to prepare the experimental setup and analysis pipeline. A cruicial parameter in this study is the ethological relevance under which this episodic memory formation takes place. Escape behaviour in rodents is such a behaviour and will be defined in the following paragraph.
+Neurons of the anterios dorsal nucleus are known to contain a subset of cells that are head direction (HD) tuned and form part of a cortical circuit that plays a central role in episodic memory formation. These HD cells are known to provide directional input to downstream hippocampal neurons, functionally linked to memory impairments. In a recent study, \cite{Blanco-Hernndez2024} revealed additional correlations of these HD cells with sensory input to the auditory and somatosensory system, that non-HD-tuned neurons in the anterior dorsal nucleus did not exhibit.
+A hypothesis to explain these results is the involvement of these cells in relaying a alert signal during ethologically relevant behaviours, as for example escape of mice from threads percieved via auditory input. Concretely, a role in memory guided reorientation, happening shortly after the onset of this behaviour, is hypothesized.\\
+
+Based on these correlations, a follow-up study now will investigate the \textit{functional} relationship of these HD cells with episodic memory formation by selectively inactivating them by optogenetic tools and resulting behavioural effects in mice. %maybe explain why ethological relevance is important
+The goal of this project to prepare the experimental setup and analysis pipeline to conduct that study.
 
 
 
@@ -84,7 +87,7 @@ Escape behaviour in mice \cite{BrancoEscapeBehavuour2025} is a rapid, stereotype
 
 The success of the project will be evaluated along two mayor requirements:
 
-First, a environment has to be created, in which episodic memory formation can be studied by initiating and recording escape behaviour in mice. A experimental paradigm closely related is used in \cite{Campagner2023}. Escape behaviour has to be reproduced under this paradigm, with the additional introduction of a modification as will be described down below. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed. These results will also allow evaluating qualitatively, whether mice in the prepared experimental setup exhibit the behaviour described in the preceding paragraph.
+First, a environment has to be created, in which escape behaviour in mice can be initiated and recorded. A experimental paradigm closely related is used in \cite{Campagner2023}. Escape behaviour has to be reproduced under this paradigm, with the additional introduction of a modification as will be described down below. Second, a analysis pipeline has to be implemented, that takes these recordings as input and extracts head direction and homing vector along the time axis of individual trials. To allow scaling the analysis to extended periods of time and to multiple animals, pose tracking of these bodyparts has to be automated, to which a Convolutional Neural Network (CNN) for computer vision is employed. These results will also allow evaluating qualitatively, whether mice in the prepared experimental setup exhibit the behaviour described in the preceding paragraph.
 
 
 
@@ -100,11 +103,18 @@ All trials were performed in a elevated circular arena made of solid plastic of 
 %Experimental setup
 Data was recorded using Spike2 (Cambridge Electronic Design Limited), which controlled camera and speakers. Sound stimuli were send by the program after a button press from the experimenter and reached sound pressure levels of 65-80 dB at the centre of the arena. TTL triggers for controlling frames were sent to the camera at a frame rate of 25 per second. Spike2 recordings were exported and converted to .mat format. The camera lens was changed beginning with recordings of mice 5, which resulted in a drop in image resolution due to unresolved hardware issues.
 
+%Sound stimuli
+%Click
 
-\subsection{Mice}
+%Sweep
+
+%White noise
+
+
+%\subsection{Mice}
 
 \subsection{Pose tracking}
-Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut 3.0.0rc9(DLC) \cite[]{Nath2019} for Python 3.10 to train a CNN for pose estimation. Code with detailed descriptions can be found in \autoref{A}.\\
+Pose tracking of left ear, right ear and nose was performed using the software package DeepLabCut 3.0.0rc9(DLC) \cite[]{Nath2019} for Python 3.10 to train a CNN for pose estimation.\\
 
 A training data set of 200 uncropped images, selected by DLC's automatic k-means frames extraction method from recordings of the first three mice, was selected and manually labeled. Importantly, this training set does not yet include mice under the second camera lens introduced in recordings of subsequent mice. DLC offes pretrained weight initialisations with corresponding models fitted to different scenarios of pose tracking. The weight initialisation pretrained to a overhead view of mice (SuperAnimal-TopViewMouse)\cite{Ye_2024} was choosen, in combination with a underlying HRNet-w32 architecture and the default image augmentation method albumentations.\\
 
@@ -112,7 +122,7 @@ A training data set of 200 uncropped images, selected by DLC's automatic k-means
 Labeling data was performed on a desktop-PC, due to the requirement of a graphical user interface. All subsequent steps for pose tracking were run on the Cluster of the Werner Reichardt Centre for Integrative Neuroscience, where model fine tuning was performed using a NVIDIA A100 40GB.\\
 
 
-Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1].
+Pose tracking on a recording yields both the estimated coordinates by the model as well the confidence of the model in this estimation as a scalar in the range of [0, 1]. Frames with confidence score below 0.3 are excluded from the analysis and interpolated in the figures.
 % Maybe look up threshold below which DLC puts points to generic posistion at corner.
 
 % Synchronizing trigger data and video recordings
@@ -122,7 +132,7 @@ Pose tracking on a recording yields both the estimated coordinates by the model 
 \subsection{Homing vector analysis}
 Homing vector analysis was run using Python 3.10 and pandas 2.3.3. Due the escape behaviour being only repeatably observable during recording with mice 6, this analysis is only run on for the data of this mouse.
 
-Trials were segmented to contain 1000ms prestimulus and 5000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice.
+Trials were segmented to contain 1000ms prestimulus and 2000 ms poststimulus intervals, and the corresponding number of frames (6s * 25 frames/s = 150 frames) were extracted per trial. Shelter position was manually determined for each mouse, as its exact pixel position within the frame changed slightly between recording sessions of different mice.
 
 At each timepoint, head center position was calculated as the midpoint between the ears, head direction as the vector from head centre to nose, and homing vector as the vector from head centre to shelter position. The absoloute angular difference (AAD) was defined as the absoloute value of the angle between head direction vector and homing vector, in degrees´.
 
@@ -132,7 +142,8 @@ To asses reorientation accuracy, the AAD of selected valid trials was calculated
 
 % RESULTS
 \section{Results}
-
+\subsection{White noise most reliably triggers escape behaviour}
+% Quantitavely evaluate lab notes
 \subsection{Pose estimation}
 %\subsubsection{Evaluating quality of pose tracking}
 The evaluation of the confidence assigned by the model to its own estimations show medium quality of pose estimation data. These results in \ref{fig:confidencehistograms} from the model trained on data of the first three mice show a clear decline in pose estimation quality after mouse 5, where switching the camera lens caused a change in image resolution.
@@ -151,42 +162,61 @@ Figures in Appendix \ref{A} additionally highlight large gaps in the pose estima
 \begin{figure}
 	\centering
 	\includegraphics[width=1.\linewidth]{angular_velocity}
-	\caption{Angular velocity trajectories for mouse 6. Red vertical line indicated stimulus onset. Pronounced deflections after simulus onset indicate rapid reorientation - possibly towards shelter -, a hallmark of escape behaviour in mice. Trials selected as valid escape attempts are marked with a bold black border around the tile.}
+	\caption{Angular velocity trajectories for mouse 6. Red vertical line mark stimulus onset. Pronounced deflections after simulus onset indicate rapid reorientation - possibly towards shelter -, a hallmark of escape behaviour in mice. Trials selected as valid escape attempts are marked with a bold black border around the tile. Straight lines represent interpolated data due to pose estimation confidence being below 0.3 at these timepoints. Missing data means there was no data above 0.3 confidence after that timepoint to interpolate.}
 	\label{fig:angularvelocity}
 \end{figure}
 
 
 
-Figure \ref{fig:angularvelocity} shows all trials of mouse 6 and the trajectories of head angular velocity. Notable deflections in angular velocity indicate rapid head movement in the plane paralled to the floor, corresponding to a change of head direction are present in trials 0, 3, 4, 6, 7, 13.
+Figure \ref{fig:angularvelocity} shows all trials of mouse 6 and the trajectories of head angular velocity. Notable deflections in angular velocity indicate rapid head movement in the plane parallel to the floor, corresponding to a change of head direction are present in trials 0, 3, 4, 6, 7, 13.
 
-\subsection{Establishing a baseline for reorientation accuracy}
+\newpage
+\subsection{High reorientation accuracy at escape initiation}
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{reorientation_error_angle}
-	\caption{}
+	\caption{Error angle, defined as difference between head direction and homing vector during escape trials of mouse 6. Red vertical line mark stimulus onset. Thin green lines represent individual valid trials, thick green line mean of valid trials. Straight lines represent interpolated data due to pose estimation confidence being below 0.3 at these timepoints. Missing data means there was no data above 0.3 confidence after that timepoint to interpolate.}
 	\label{fig:reorientationerrorangle}
 \end{figure}
+
+Data from mouse 6 demonstrates in a ostensive manner the accuracy (Figure \ref{fig:reorientationerrorangle}
+) with which the mouse reorients itself towards the shelter, presumably relying solely on episodic  in calculating the required reorientation angle. The difference between homing vector and head direction (error angle) drops below 2° in the time window from 600 - 800ms after stimulus onset in every preselected trial. Notably, the error angle increases again after the initial reorientation in some of the trials. 
+
 
 \newpage
 % DISCUSSION
 \section{Discussion}
+This pilot study aimed to set up a experimental environment and analysis pipeline for a upcoming study of escape behaviour in mice. Data of the most recent mouse demonstrated a successfull run from beginning to start under this setup and the applicability of the analysis pipeline for automated pose estimation.
 
-The drop in pose estimation confidence underscores, that this pipeline for pose estimation is not robust to changes in the recording setup. To achieve a reliably high quality of estimations, it is suggested to train another pose estimation model with data recorded under the final recording setup, possibly also utilizing DeepLabCuts additional functionality for active learning.
+The possibility remains that mouse 6 simply easily scared and subsequent mice will react with the same low escape probabilty. Whether this high reliablity in triggering escape behaviour with the white noise stimulus can be reproduced in other mice remains to be tested. 
 
-% ACKNOWLEDGEMENTS
+The pose estimation model achieves very good performance on data recorded with the same image quality and lens settings as its training data. For mouse 5 and 6, the drop in pose estimation confidence underscores, that it is however not robust to a change in the recording setup as implemented starting from mouse 5. To achieve a reliably high quality of estimations, it is required to train another pose estimation model with data recorded under the final recording setup.\\
 
-% LITERATURE
+Mouse 6 demonstrated very high reorientation accuracy towards the shelter during escape. The study on head direction cells of the anterior dorsal nucleus aims to selectively inhibit these cells. The high reorientation accuracy without inhibition allows data from mice without these cells inhibited to serve as a baseline for establishing a functional relationship between HD cells and and alterations in memory guided reotientation during escape.
+
 \newpage
+\section{Ethics statement}
+% ACKNOWLEDGEMENTS
+\section{Acknowledgements}
+I thank Prof. Andrea Burgalossi and Florian Hofmann for supervising my lab rotation.
+
+\section{LLM usage in writing}
+Section 1.2. is based on manual editing of the answer of the follwing prompt to ChatGPT based on GPT-5.2 supplied with \cite{BrancoEscapeBehavuour2025}:
+"on the basis of this article, write a short scientific introductory paragraph to a lab report. the paragraph should focus on explaining how escape behaviour in mice "looks like" and on the reorientation towards the shelter as well as timing. do not include information about brain circuits"\\
+
+Answer: Escape behaviour in mice is a rapid, stereotyped defensive action that is triggered when a sensory stimulus signals imminent danger. Behaviourally, escape typically consists of a brief latency followed by an abrupt initiation of high-speed locomotion, often preceded by a short orienting or freezing phase. Once escape is initiated, mice generate a directed movement that increases distance from the threat and is commonly biased toward a place of safety rather than simply away from the stimulus. In laboratory paradigms, animals reliably reorient their body axis toward a previously learned shelter location, even when the shelter is not visible at the time of threat, indicating that spatial information is rapidly accessed at escape onset. The timing of escape is tightly linked to threat imminence: stimuli that rapidly approach or cross a critical proximity threshold evoke responses with latencies on the order of hundreds of milliseconds, whereas weaker or more ambiguous threats delay initiation. After onset, escape is sustained until the animal reaches shelter, highlighting that escape behaviour is not a reflexive turn-and-run, but a temporally structured sequence comprising fast initiation, goal-directed reorientation, and continued locomotion until safety is achieved
+
+\newpage
+% LITERATURE
 \bibliography{./references}
 
+\newpage
 \appendix
-\section{DeepLabCut commands}\label{A}
-Initializing the dataset has to be run on the cluster as well, as models are downloaded during this step.
-
-\section{Pose estimation confidence}
+\section{Pose estimation confidence}\label{Appendix A}
+Figure on displayed on next page.
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\linewidth]{confidence_mouse1}
+	\includegraphics[width=0.65\linewidth]{confidence_mouse1}
 	\caption{Pose estimation confidence of single trials in mouse 1. See \ref{fig:confidencemouse6} for description. Upper 10 are trials with highest average confidence, bottom 10 are trials with lowest average confidence.}
 	\label{fig:confidencemouse1}
 \end{figure}
@@ -194,7 +224,7 @@ Initializing the dataset has to be run on the cluster as well, as models are dow
 \begin{figure*}
 	\centering
 	\includegraphics[width=0.65\linewidth]{confidence_mouse6}
-	\caption{Pose estimation confidence of single trials (trials with and without escape behaviour, before valid trials selection) in mouse 6. Estimation confidence is lowest confidence among pose estimations for all three bodyparts per frame. One tile contains one trials.  With frame no° (i.e. time) on x-axis. Green vertical bar indicated stimulus onset. Red horizontal bar as visual guidance towards marking threshold for very low confidence of 0.33 out of possible 1.0 .}
+	\caption{Pose estimation confidence of single trials (trials with and without escape behaviour, before valid trials selection) in mouse 6. Estimation confidence is lowest confidence among pose estimations for all three bodyparts per frame. One tile contains one trials.  With frame no° (i.e. time) on x-axis. Green vertical bars mark stimulus onset. Red horizontal bar as visual guidance towards marking threshold for very low confidence of 0.33 out of possible 1.0 .}
 	\label{fig:confidencemouse6}
 \end{figure*}
 
